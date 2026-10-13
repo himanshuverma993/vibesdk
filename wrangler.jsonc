@@ -20,6 +20,15 @@
 	// apps' env.DB binding.
 	"compatibility_date": "2026-05-23",
 	"compatibility_flags": ["nodejs_compat"],
+	// Build the client bundle + worker bundle before deploy. `wrangler deploy`
+	// runs this command automatically, so a bare `npx wrangler deploy` (e.g. the
+	// Cloudflare Workers Builds deploy command) no longer fails with
+	// `The directory specified by the "assets.directory" field ... does not exist`
+	// when the dashboard build command is empty. `bun run build` = the `space`
+	// workspace esbuild bundle + `vite build` (emits dist/client and dist/<name>).
+	"build": {
+		"command": "bun run build"
+	},
 	// Preserve dashboard-managed vars on deploy so dashboard-only settings
 	// (e.g. ENABLE_ARTIFACTS and ENABLE_READ_REPLICAS) are not deleted by `wrangler deploy`.
 	"keep_vars": true,
